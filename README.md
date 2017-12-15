@@ -5,7 +5,7 @@
 <p>You have the skills, but you need to be able to show them off without including meaningless bullets?</p>
 <p>Keep getting rejected by the automatic resume checkers because your wording is just slightly different than the job posting?</p>
 <p>This tool can help maintain your data and quickly populate your resume with just the data you want.</p>  
-High level plan:</h2>
+<h2>High level plan:</h2>
 <p>Allow a user to input all their past data into one convenient location.</p>
 <p>This data can then be selected or rejected before being populated into word documents.</p>
 <p>These documents will be user modifiable so that many resume templates can be utilized.</p>
