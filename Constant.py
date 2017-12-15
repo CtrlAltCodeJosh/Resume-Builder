@@ -1,10 +1,3 @@
-#local file imports
-from SkillsWindow import *
-from EducationWindow import *
-from JobsWindow import *
-from StatementsWindow import *
-#from LoginWindow import *
-
 #library imports
 from tkinter import *
 import ttk

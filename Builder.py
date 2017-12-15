@@ -1,5 +1,9 @@
 from Constant import *
-
+from SkillsWindow import *
+from EducationWindow import *
+from JobsWindow import *
+from StatementsWindow import *
+#from LoginWindow import *
 
 class MasterWindow(Tk):
 	'''Although this window is never seen, it is the master window behind
@@ -264,10 +268,10 @@ class DataLoadingWindow(Frame):
 		self.personalInfoLabel.grid(row=1, column=0, padx=15, pady=15)
 		
 		#these will be whole other windows and will pass around the user objects
-		#self.skillsWindow = skillsWindow()
-		#self.perstateWindow = perstateWindow()
-		#self.edwindow = educationWindow()
-		#self.jobWindow = experienceWindow()
+		self.skillsWindow = SkillsWindow()
+		self.perstateWindow = PersonalStatementWindow()
+		self.edwindow = EducationWindow()
+		self.jobWindow = ExperienceWindow()
 		
 		self.skillsButton = Button(buttonBox, text='Skills')
 		self.jobButton = Button(buttonBox, text='Experience')
