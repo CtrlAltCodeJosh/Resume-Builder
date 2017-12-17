@@ -44,6 +44,7 @@ class School:
 class Job:
 	
 	def __init__(self):
+		self.number = 0
 		self.title = ''
 		self.company = ''
 		self.dates = [] 

@@ -84,9 +84,6 @@ class MasterWindow(Tk):
 		'''returns the user to all the windows'''
 		return self.User
 		
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------			
 
 
 class LoginWindow(Frame):
@@ -202,7 +199,7 @@ class ReturningUserWindow(Frame):
 		self.User = User
 		requestLabel = Label(self, text = 'Please enter your user Name:')
 		UserNameEntry = Entry(self, textvariable = self.fileName)
-		#UserNameEntry.bind('<Return>', lambda: self.validateUser)
+
 		goButton = Button(self, text = 'GO', font = VERDANA12, command = self.validateUser)
 		loginReturnButton = Button(self, text = 'Back', font = VERDANA12,	
 					command = lambda: controller.show_frame(LoginWindow))	
@@ -247,41 +244,70 @@ class DataLoadingWindow(Frame):
 		self.phone = StringVar()
 		self.linkedin = StringVar()
 		self.email = StringVar()
-		Frame.__init__(self, parent)
-		box = Frame(self)
-		titleBox = Frame(box)
-		titleBox.grid(row=0, column=0)
-		buttonBox = LabelFrame(box, text='add or modify your general resume information', pady = 15)
-		buttonBox.grid(row=1, column=0)
-		acctNExitBox = Frame(box)
-		acctNExitBox.grid(row=2, column=0)
-		box.pack()
-		accountButton = Button(acctNExitBox, text = 'Account', 
-						command = lambda: controller.show_frame(NewUserWindow))
-		accountButton.grid(row=0, column=0, sticky='sw', pady=25)
-		saveAndExitButton = Button(acctNExitBox, text = 'Save and Exit', command = lambda: controller.storeDataAndExit(self.User))
-		saveAndExitButton.grid(row=0, column=1)
-
-		self.personalLabel = Label(titleBox, font = VERDANA12, pady = 15)
-		self.personalInfoLabel = Label(titleBox)
-		self.personalLabel.grid(row=0, column=0)
-		self.personalInfoLabel.grid(row=1, column=0, padx=15, pady=15)
+		self.controller = controller
 		
 		#these will be whole other windows and will pass around the user objects
-		self.skillsWindow = SkillsWindow()
-		self.perstateWindow = PersonalStatementWindow()
-		self.edwindow = EducationWindow()
-		self.jobWindow = ExperienceWindow()
+		self.skillsWindow = SkillsWindow(self)
+		self.perstateWindow = PersonalStatementWindow(self)
+		self.edwindow = EducationWindow(self)
+		self.jobWindow = ExperienceWindow(self)
 		
-		self.skillsButton = Button(buttonBox, text='Skills')
-		self.jobButton = Button(buttonBox, text='Experience')
-		self.educationButton = Button(buttonBox, text='Education')
-		self.statementButton = Button(buttonBox, text='Personal Statements')
-		self.jobButton.grid(row=0, column=0, padx=5, pady=5)
-		self.skillsButton.grid(row=0, column=1, padx=5, pady=5)
-		self.educationButton.grid(row=1, column=0, padx=5, pady=5)
-		self.statementButton.grid(row=1, column=1, padx=5, pady=5)
+		#create the master frame for the window, this will hold all other frames
+		Frame.__init__(self, parent)
+		box = Frame(self)
+		box.pack()
 		
+		#create boxes to hold catagories of buttons and labels
+		titleBox = Frame(box)
+		generalButtonBox = LabelFrame(box, text='add or modify your general resume information', pady = 15)
+		createButtonBox = LabelFrame(box, text='select details and templates to generate resumes', pady = 15)
+		bottomButtonBox = Frame(box)
+		
+		#layout the catagory boxes
+		titleBox.grid(row=0, column=0)
+		generalButtonBox.grid(row=1, column=0)
+		createButtonBox.grid(row=2, column=0)
+		bottomButtonBox.grid(row=3, column=0)
+		
+		#layout the topmost frame
+		self.personalLabel = Label(titleBox, font = VERDANA12, pady = SMALLLPADDING)
+		self.personalInfoLabel = Label(titleBox)
+		self.templateLabel = Label(titleBox)
+		self.personalLabel.grid(row=0, column=0)
+		self.personalInfoLabel.grid(row=1, column=0, padx=SMALLLPADDING, pady=SMALLLPADDING)
+		self.templateLabel.grid(row=2, column=0, padx=SMALLLPADDING, pady=SMALLLPADDING)
+		
+		#layout the top middle (label)frame
+		self.skillsButton = Button(generalButtonBox, text='Skills', width=GBUTTONWIDTH, command = lambda: self.skillsWindow.openWindow(self.User))
+		self.jobButton = Button(generalButtonBox, text='Experience', width=GBUTTONWIDTH, command = lambda: self.jobWindow.openWindow(self.User))
+		self.educationButton = Button(generalButtonBox, text='Education', width=GBUTTONWIDTH, command = lambda: self.edwindow.openWindow(self.User))
+		self.statementButton = Button(generalButtonBox, text='Personal Statements', width=GBUTTONWIDTH, command = lambda: self.perstateWindow.openWindow(self.User))
+		self.jobButton.grid(row=0, column=0, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		self.skillsButton.grid(row=0, column=1, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		self.educationButton.grid(row=1, column=0, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		self.statementButton.grid(row=1, column=1, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		
+		#layout the bottom middle (label)frame
+		self.selectTemplateButton=Button(createButtonBox, width=GBUTTONWIDTH, text = 'Select Resume Template', command = self.selectTemplate)
+		self.selectData=Button(createButtonBox, width=GBUTTONWIDTH, text='select information for template')
+		self.selectTemplateButton.grid(row=0, column=0, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		self.selectData.grid(row=0, column=1, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		
+		#layout the bottom frame
+		acctNExitBox = Frame(bottomButtonBox)
+		acctNExitBox.grid(row=2, column=0)
+		self.accountButton = Button(acctNExitBox, text = 'Account', 
+						command = lambda: self.controller.show_frame(NewUserWindow))
+		self.accountButton.grid(row=0, column=0, sticky='sw', pady=25)
+		self.saveAndExitButton = Button(acctNExitBox, text = 'Save and Exit', command = lambda: self.controller.storeDataAndExit(self.User))
+		self.saveAndExitButton.grid(row=0, column=1)
+
+	def selectTemplate(self):
+		'''need a new variable for this class'''
+		print ('opening file window for template select')
+		self.templateLabel.config(text='resume template %s selected' % 'TEMPLATE')
+	
+	
 	def updateFrame(self, User):
 		'''updates all updateable fields of the frame when called'''
 		self.User = User
@@ -289,6 +315,29 @@ class DataLoadingWindow(Frame):
 		self.personalLabel.config(text = 'Welcome %s!' % name)
 		self.personalInfoLabel.config(text = 'email: %s\tLinkedIn: %s\tPhone: %s' % (email, link, phone))
 		
+	
+	def buttonsOff(self):
+		'''Turns all buttons on this page off, used when new windows are opened'''
+		self.jobButton.config(state=DISABLED)
+		self.educationButton.config(state=DISABLED)
+		self.statementButton.config(state=DISABLED)
+		self.skillsButton.config(state=DISABLED)
+		self.selectTemplateButton.config(state=DISABLED)
+		self.selectData.config(state=DISABLED)
+		self.accountButton.config(state=DISABLED)
+		self.saveAndExitButton.config(state=DISABLED)
+	
+	
+	def buttonsOn(self):
+		'''Turns all buttons on this page on, used when new windows are closed'''
+		self.jobButton.config(state=NORMAL)
+		self.educationButton.config(state=NORMAL)
+		self.statementButton.config(state=NORMAL)
+		self.skillsButton.config(state=NORMAL)
+		self.selectTemplateButton.config(state=NORMAL)
+		self.selectData.config(state=NORMAL)
+		self.accountButton.config(state=NORMAL)
+		self.saveAndExitButton.config(state=NORMAL)
 
 if __name__ == '__main__':
 	
