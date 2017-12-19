@@ -89,6 +89,26 @@ class Job:
 	def getJobDetails(self):
 		return self.title, self.company, self.dates, self.acomplishments
 		
+'''
+class SkillsGroup:
+	def __init__(self, name=None):
+		if name != None:
+			groupName = name
+		else:
+			groupName = ''
+		self.Skills[groupName]
+		
+	def nameGroup(self, name):
+		self.groupName=name
+	
+	def addSkill(self, catagory, skill, years=None):
+		if catagory in self.Skills:
+			self.Skills[catagory].append([skill, years])
+		else:
+			self.Skills[catagory] = [skill, years]
+'''	
+
+		
 		
 class User:
 	
@@ -98,7 +118,7 @@ class User:
 		self.phone = ''
 		self.email = ''
 		self.linkedin = ''
-		self.statements =[]
+		self.statements = []
 		self.jobs = []
 		self.education = []
 		self.skillCatagories = {}

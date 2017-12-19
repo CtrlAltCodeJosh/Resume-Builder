@@ -14,6 +14,8 @@ class MasterWindow(Tk):
 		self.container.pack(side='top', fill = 'both', expand = True) #pack the windows into the frame as needed
 		self.title("Resume Builder")#, font = VERDANA12)
 		
+		self.protocol("WM_DELETE_WINDOW", lambda: self.storeDataAndExit(self.User))
+		
 		self.container.grid_rowconfigure(0, weight=1)
 		self.container.grid_columnconfigure(0, weight=1)
 		self.frames = {} # a library for all the frames
@@ -25,6 +27,7 @@ class MasterWindow(Tk):
 			self.frames[window] = frame
 			frame.grid(row=0, column=0, sticky='nsew')
 		self.show_frame(LoginWindow)
+		
 		
 	def show_frame(self, controller):
 		''' Switches frames for different UI'''

@@ -3,7 +3,7 @@ from Constant import *
 class ExtraWindowsMaster:	
 	
 	def __init__(self, caller):
-		self.User = UserClasses.User()
+		self.User = caller.User
 		self.master = Toplevel()
 		self.topFrame = Frame(self.master)#, width = GMASTERWIDTH/4, height=GMASTERHEIGHT/4)
 		self.middleFrame = LabelFrame(self.master, text = '', width = GMASTERWIDTH, height=GMASTERHEIGHT)
@@ -16,8 +16,8 @@ class ExtraWindowsMaster:
 		self.caller = caller
 		self.master.withdraw()
 		self.master.protocol("WM_DELETE_WINDOW", self.closeAndUpdate)
-		self.windowLabel = Label(self.topFrame, text = '', width=GBUTTONWIDTH,)
-		self.windowLabel.grid(row=0, column=0, padx=SMALLBPADDING, pady=SMALLBPADDING)
+		self.windowLabel = Label(self.topFrame, text = '')
+		self.windowLabel.grid(row=0, column=0, padx=SMALLBPADDING, pady=SMALLBPADDING, sticky=NSEW)
 		
 	def openWindow(self, User):
 		self.caller.buttonsOff()
@@ -26,6 +26,7 @@ class ExtraWindowsMaster:
 		
 	def closeAndUpdate(self):
 		self.caller.buttonsOn()
+		self.caller.controller.updateUser(self.User)
 		self.caller.updateFrame(self.User)
 		self.master.withdraw()
 
