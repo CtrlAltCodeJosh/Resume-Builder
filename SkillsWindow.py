@@ -87,7 +87,7 @@ class SkillsWindow(ExtraWindowsMaster):
 		monthEntry = Entry(lastBox, width=GBUTTONWIDTH*2)
 		goButton = Button(lastBox, text = 'Change', command = lambda: GoButtonEvent(skillEntry.get(), monthEntry.get()))
 		deleteButton = Button(lastBox, text = 'Remove', command = deleteButtonEvent)
-		changedMind = Button(lastBox, text = 'I changed my mind', command = self.changedMind)
+		changedMind = Button(lastBox, text = 'I changed my mind', command = self.populateMidFrame)
 		skillEntry.insert(0, str(skill))
 		monthEntry.insert(0, str(months))
 		veryTopLabel.grid(row=0, columnspan=2)
@@ -103,7 +103,6 @@ class SkillsWindow(ExtraWindowsMaster):
 
 	def populateMidFrame(self):
 		'''Mid Frame is the frame in the middle of this window that holds the actual user details'''
-		#username, name, phone, email, link, statements, jobs, eds, skillCat = 
 		userDetails = self.User.getUserDetails()
 		for item in self.middleFrame.winfo_children():
 			item.destroy()
@@ -154,16 +153,13 @@ class SkillsWindow(ExtraWindowsMaster):
 			print('updating user')
 			self.User.renameSkillCatagory(oldName, newName)
 			self.populateMidFrame()
-		changedMindButton = Button(frameHolder, text='I changed my mind', command=self.changedMind)
+		changedMindButton = Button(frameHolder, text='I changed my mind', command=self.populateMidFrame)
 		goButton = Button(frameHolder, text = 'Save', command = lambda: updateUser(name, newCatEntry.get()))
 		renameLabel.grid(row=0, column=0)
 		newCatEntry.grid(row=0, column=1)
 		goButton.grid(row=0, column=2)
 		changedMindButton.grid(row=1, columnspan=2)
 		frameHolder.grid(row=25, column=0)
-		
-	def changedMind(self):
-		self.populateMidFrame()	
 	
 	def deleteCat(self, catagory):
 		self.User.removeSkillCatagory(catagory)

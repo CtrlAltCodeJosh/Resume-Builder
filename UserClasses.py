@@ -38,7 +38,12 @@ class School:
 		return True
 		
 	def getSchool(self):
-		return self.school, self.gpa, self.dates, self.coursework
+		schoolDict = {}
+		schoolDict['schoolName'] = self.school
+		schoolDict['gpa'] = self.gpa
+		schoolDict['datesAttended'] = self.dates
+		schoolDict['courses'] = self.coursework
+		return schoolDict
 	
 
 class Job:
@@ -240,7 +245,7 @@ class User:
 		
 	def removeSchool(self, school):
 		for eachSchool in self.education:
-			name, dummy, dummy2, dummy3 = eachSchool.getSchool()
+			name = eachSchool.getSchool()['schoolName']
 			if name == school:
 				self.education.remove(eachSchool)
 				return True
