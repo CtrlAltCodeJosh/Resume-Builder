@@ -88,25 +88,6 @@ class Job:
 		
 	def getJobDetails(self):
 		return self.title, self.company, self.dates, self.acomplishments
-		
-'''
-class SkillsGroup:
-	def __init__(self, name=None):
-		if name != None:
-			groupName = name
-		else:
-			groupName = ''
-		self.Skills[groupName]
-		
-	def nameGroup(self, name):
-		self.groupName=name
-	
-	def addSkill(self, catagory, skill, years=None):
-		if catagory in self.Skills:
-			self.Skills[catagory].append([skill, years])
-		else:
-			self.Skills[catagory] = [skill, years]
-'''	
 
 		
 		
@@ -131,8 +112,34 @@ class User:
 	
 	def getUserName(self):
 		return self.userName
+		
+	def addNewSkillCatagory(self, catagory):
+		catagory = catagory.lower()
+		catagory = catagory[0].upper() + catagory[1:]
+		if catagory in self.skillCatagories:
+			raise ValueError('catagory already exists')
+		else:
+			self.skillCatagories[catagory] = []
+	
+	def renameSkillCatagory(self, oldCatName, newCatName):
+		
+		
+		if oldCatName in self.skillCatagories:
+			holder = self.skillCatagories[oldCatName]
+			del self.skillCatagories[oldCatName]
+			newCatName = newCatName.lower()
+			newCatName = newCatName[0].upper() + newCatName[1:]
+			self.skillCatagories[newCatName] = holder
+		else:
+			raise IndexError("skill catagory doesn't exist")
+			
+
+		
 	
 	def addSkill(self, catagory, skill, years):
+		print ('catagory: %s' % catagory)
+		print ('skill: %s' % skill)
+		print ('years: %s' % years)
 		catagory = catagory.lower()
 		catagory = catagory[0].upper() + catagory[1:]
 		if catagory in self.skillCatagories:
@@ -140,17 +147,28 @@ class User:
 		else:
 			self.skillCatagories[catagory] = [(skill, years)]
 		return True
+		
+	def removeSkillCatagory(self, catagory):
+		if catagory in self.skillCatagories:
+			del self.skillCatagories[catagory]
+		else:
+			raise ValueError('catagory is not in catagory list')
 
 	def removeSkill(self, catagory, skill):
+		print('removing %s from catagory %s' % (skill, catagory))
 		catagory = catagory.lower()
 		catagory = catagory[0].upper() + catagory[1:]
 		if catagory not in self.skillCatagories:
 			return False
+			print ("catagory doesn't exist")
 		for eachSkill in self.skillCatagories[catagory]:
+			print ('going through skills')
+			print (eachSkill)
 			if eachSkill[0] == skill:
+				print (' fournd skill now removing')
 				self.skillCatagories[catagory].remove(eachSkill)
 				if self.skillCatagories[catagory] == []:
-					del self.skillCatagories[catagory]
+					self.removeSkillCatagory(catagory)
 				return True
 		return False
 		
@@ -229,7 +247,19 @@ class User:
 		return False
 		
 	def getUserDetails(self):
-		return self.userName, self.name, self.phone, self.email, self.linkedin, self.statements, self.jobs, self.education, self.skillCatagories
+		userDetails={
+					'username':self.userName, 
+					'name':self.name, 
+					'phone':self.phone,
+					'email':self.email,
+					'linkedIn':self.linkedin,
+					'statements':self.statements,
+					'jobs':self.jobs,
+					'education':self.education,
+					'skillSets':self.skillCatagories
+					}
+		return userDetails
+		#self.userName, self.name, self.phone, self.email, self.linkedin, self.statements, self.jobs, self.education, self.skillCatagories
 		
 def ClassTest():
 	print ('Class Tester!')
@@ -285,7 +315,8 @@ def ClassTest():
 	aUser.addSkill(course2, course3, '25 years')
 	aUser.removeSkill(course1, jobtitle2)
 
-	nameTest, phoneTest, emailTest, linkedTest, statementTest, jobsTest, educationTest, skillsTest = aUser.getUserDetails()
+	#need to fix this test (old  return protocol)
+	#nameTest, phoneTest, emailTest, linkedTest, statementTest, jobsTest, educationTest, skillsTest = aUser.getUserDetails()
 	print (nameTest)
 	print (phoneTest)
 	print (emailTest)

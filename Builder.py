@@ -165,12 +165,13 @@ class NewUserWindow(Frame):
 	def updateFrame(self, User):
 		'''updates the frame before opening the window'''
 		self.User = User
-		username, name, phone, email, link, statements, jobs, eds, skillCat = self.User.getUserDetails()
-		self.UserName = username
-		self.name = name
-		self.phone = phone
-		self.email = email
-		self.LinkedIn = link
+		#username, name, phone, email, link, statements, jobs, eds, skillCat = 
+		userDetails = self.User.getUserDetails()
+		self.UserName = userDetails['username']
+		self.name = userDetails['name']
+		self.phone = userDetails['phone']
+		self.email = userDetails['email']
+		self.LinkedIn = userDetails['linkedIn']
 			
 	def packUpUser(self):
 		'''packs up the user data into a user object and calls the 
@@ -314,9 +315,11 @@ class DataLoadingWindow(Frame):
 	def updateFrame(self, User):
 		'''updates all updateable fields of the frame when called'''
 		self.User = User
-		username, name, phone, email, link, statements, jobs, eds, skillCat = self.User.getUserDetails()
-		self.personalLabel.config(text = 'Welcome %s!' % name)
-		self.personalInfoLabel.config(text = 'email: %s\tLinkedIn: %s\tPhone: %s' % (email, link, phone))
+		#username, name, phone, email, link, statements, jobs, eds, skillCat =
+		userDetails = self.User.getUserDetails()
+		self.personalLabel.config(text = 'Welcome %s!' % userDetails['name'])
+		self.personalInfoLabel.config(
+			text = 'email: %s\tLinkedIn: %s\tPhone: %s' % (userDetails['email'], userDetails['linkedIn'], userDetails['phone']))
 		
 	
 	def buttonsOff(self):
